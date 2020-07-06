@@ -16,6 +16,8 @@ local groundScroll = 0
 local BACKGROUND_SCROLL_SPEED = 30
 local GROUND_SCROLL_SPEED = 60
 
+local BACKGROUND_LOOPING_POINT = 733
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
@@ -36,6 +38,12 @@ function love.keypressed(key)
     if key == 'escape' then
         love.event.quite()
     end
+end
+
+function love.update(dt)
+    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+
+    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
 end
 
 function love.draw()
