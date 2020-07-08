@@ -88,7 +88,7 @@ function love.update(dt)
     bird:update(dt)
 
     for key, pair in pairs(pipePairs) do
-        pipe:update(dt)
+        pair:update(dt)
     end
 
     for key, pair in pairs(pipePairs) do
