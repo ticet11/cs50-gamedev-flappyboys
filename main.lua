@@ -26,6 +26,8 @@ local GROUND_SCROLL_SPEED = 60
 
 local BACKGROUND_LOOPING_POINT = 733
 
+local GROUND_LOOPING_POINT = 514
+
 local bird = Bird()
 
 local pipePairs = {}
