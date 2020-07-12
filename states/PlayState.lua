@@ -1,4 +1,6 @@
-PlayState = Class{__includes = BaseState}
+PlayState = Class {
+    __includes = BaseState
+}
 
 PIPE_SPEED = 60
 PIPE_HEIGHT = 288
@@ -12,16 +14,18 @@ function PlayState:init()
     self.pipePairs = {}
     self.timer = 0
 
+    self.score = 0
+
     -- initialize last recorded Y value for gap placement
-    self.lastY = - PIPE_HEIGHT + math.random(80) + 20
+    self.lastY = -PIPE_HEIGHT + math.random(80) + 20
 end
 
 function PlayState:update(dt)
     self.timer = self.timer + dt
 
     if self.timer > 2 then
-        local y = math.max(- PIPE_HEIGHT + 10, 
-            math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT -90 - PIPE_HEIGHT))
+        local y = math.max(-PIPE_HEIGHT + 10,
+                           math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
         self.lastY = y
 
         table.insert(self.pipePairs, PipePair(y))
@@ -30,6 +34,13 @@ function PlayState:update(dt)
     end
 
     for key, pair in pairs(self.pipePairs) do
+        if not pair.scored then
+            if pair.x + PIPE_WIDTH < self.bird.x then
+                self.score = self.score + 1
+                pair.scored = true
+            end
+        end
+
         pair:update(dt)
     end
 
@@ -38,18 +49,22 @@ function PlayState:update(dt)
             table.remove(self.pipePairs, key)
         end
     end
-    
+
     self.bird:update(dt)
 
     for k, pair in pairs(self.pipePairs) do
         for l, pipe in pairs(pair.pipes) do
             if self.bird:collides(pipe) then
-                gStateMachine:change('title')
+                gStateMachine:change('score', {
+                    score = self.score
+                })
             end
         end
     end
     if self.bird.y > VIRTUAL_HEIGHT - 15 then
-        gStateMachine:change('title')
+        gStateMachine:change('score', {
+            score = self.score
+        })
     end
 end
 
@@ -57,6 +72,9 @@ function PlayState:render()
     for key, pair in pairs(self.pipePairs) do
         pair:render()
     end
+
+    love.graphics.setFont(flappyFont)
+    love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
 
     self.bird:render()
 end
