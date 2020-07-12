@@ -29,7 +29,7 @@ function PlayState:update(dt)
         self.timer = 0
     end
 
-    for key, pair in pairs(self.pipPairs) do
+    for key, pair in pairs(self.pipePairs) do
         pair:update(dt)
     end
 
