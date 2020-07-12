@@ -48,11 +48,27 @@ function love.load()
 
     love.window.setTitle('Flappy Boys')
 
+    smallFont = love.graphics.newFont('font.ttf', 8)
+    mediumFont = love.graphics.newFont('flappy.ttf', 14)
+    flappyFont = love.graphics.newFont('flappy.ttf', 28)
+    hugeFont = love.graphics.newFont('flappy.ttf', 56)
+    love.graphics.setFont(flappyFont)
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
         resizable = true
     })
+
+    gStateMachine = StateMachine {
+        ['title'] = function()
+            return TitleScreenState()
+        end,
+        ['play'] = function()
+            return PlayState()
+        end
+    }
+    gStateMachine:change('title')
 
     love.keyboard.keysPressed = {}
 end
@@ -82,6 +98,8 @@ function love.update(dt)
         backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
 
         groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
+
+        gStateMachine:update(dt)
 
         spawnTimer = spawnTimer + dt
 
@@ -131,7 +149,7 @@ function love.draw()
 
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
 
-    bird:render()
+    gStateMachine:render()
 
     push:finish()
 end
