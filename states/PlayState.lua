@@ -66,6 +66,9 @@ function PlayState:update(dt)
         end
     end
     if self.bird.y > VIRTUAL_HEIGHT - 15 then
+        sounds['explosion']:play()
+        sounds['hurt']:play()
+
         gStateMachine:change('score', {
             score = self.score
         })
