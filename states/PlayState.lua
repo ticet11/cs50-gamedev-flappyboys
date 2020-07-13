@@ -13,6 +13,7 @@ function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
     self.timer = 0
+    self.spawnTime = 1
 
     self.score = 0
 
@@ -23,7 +24,7 @@ end
 function PlayState:update(dt)
     self.timer = self.timer + dt
 
-    if self.timer > 2 then
+    if self.timer > self.spawnTime then
         local y = math.max(-PIPE_HEIGHT + 10,
                            math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
         self.lastY = y
@@ -31,6 +32,7 @@ function PlayState:update(dt)
         table.insert(self.pipePairs, PipePair(y))
 
         self.timer = 0
+        self.spawnTime = math.random(1, 3)
     end
 
     for key, pair in pairs(self.pipePairs) do
