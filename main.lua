@@ -13,6 +13,7 @@ require 'StateMachine'
 require 'states/BaseState'
 require 'states/CountdownState'
 require 'states/PlayState'
+require 'states/PauseState'
 require 'states/ScoreState'
 require 'states/TitleScreenState'
 
@@ -43,7 +44,7 @@ local spawnTimer = 0
 
 local lastY = -PIPE_HEIGHT + math.random(80) + 20
 
-local scrolling = true
+scrolling = true
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -80,6 +81,9 @@ function love.load()
         ['countdown'] = function()
             return CountdownState()
         end,
+        ['pause'] = function()
+            return PauseState()
+        end,
         ['play'] = function()
             return PlayState()
         end,
@@ -113,11 +117,14 @@ function love.keyboard.wasPressed(key)
 end
 
 function love.update(dt)
+    if scrolling == true then
+        backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
 
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
-
+        groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
+        -- else
+        --     backgroundScroll = 0
+        --     groundScroll = 0
+    end
     gStateMachine:update(dt)
 
     love.keyboard.keysPressed = {}

@@ -22,6 +22,10 @@ function PlayState:init()
 end
 
 function PlayState:update(dt)
+    if love.keyboard.wasPressed('p') then
+        gStateMachine:change('pause')
+    end
+
     self.timer = self.timer + dt
 
     if self.timer > self.spawnTime then
@@ -86,5 +90,13 @@ function PlayState:render()
     love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
 
     self.bird:render()
+end
+
+function PlayState:enter()
+    scrolling = true
+end
+
+function PlayState:exit()
+    scrolling = false
 end
 
