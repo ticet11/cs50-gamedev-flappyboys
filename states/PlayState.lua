@@ -31,7 +31,7 @@ function PlayState:update(dt)
         end
     end
     if self.paused then
-        return
+        scrolling = false
     else
         self.timer = self.timer + dt
 
