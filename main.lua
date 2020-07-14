@@ -60,6 +60,7 @@ function love.load()
         ['jump'] = love.audio.newSource('jump.wav', 'static'),
         ['explosion'] = love.audio.newSource('explosion.wav', 'static'),
         ['hurt'] = love.audio.newSource('hurt.wav', 'static'),
+        ['pause'] = love.audio.newSource('pause.wav', 'static'),
         ['score'] = love.audio.newSource('score.wav', 'static'),
         ['music'] = love.audio.newSource('little-happy-tune.wav', 'static')
     }

@@ -2,6 +2,8 @@ PlayState = Class {
     __includes = BaseState
 }
 
+local woodPlaque = love.graphics.newImage('wood-plaque.png')
+
 PIPE_SPEED = 60
 PIPE_HEIGHT = 288
 PIPE_WIDTH = 46
@@ -26,13 +28,15 @@ function PlayState:update(dt)
     if love.keyboard.wasPressed('p') then
         if self.paused == true then
             self.paused = false
+            sounds['music']:play()
         else
             self.paused = true
+            sounds['music']:pause()
+            sounds['pause']:play()
         end
     end
     if self.paused then
         scrolling = false
-        sounds['music']:pause()
     else
         scrolling = true
         self.timer = self.timer + dt
@@ -100,6 +104,14 @@ function PlayState:render()
     love.graphics.print('Score: ' .. tostring(self.score), 8, 8)
 
     self.bird:render()
+
+    if self.paused then
+        love.graphics.printf('Paused', VIRTUAL_WIDTH / 2 - 70, VIRTUAL_HEIGHT / 2 - 110, 140, 'center')
+        love.graphics.draw(woodPlaque, VIRTUAL_WIDTH / 2 - 75, VIRTUAL_HEIGHT / 2 - 70)
+        love.graphics.printf('Maybe get some water!', VIRTUAL_WIDTH / 2 - 65, VIRTUAL_HEIGHT / 2 - 57, 130, 'center')
+        love.graphics.setFont(mediumFont)
+        love.graphics.printf('Press p again to resume.', VIRTUAL_WIDTH / 2 - 65, VIRTUAL_HEIGHT / 2 + 80, 130, 'center')
+    end
 end
 
 function PlayState:enter()
