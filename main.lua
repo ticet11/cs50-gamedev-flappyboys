@@ -13,7 +13,6 @@ require 'StateMachine'
 require 'states/BaseState'
 require 'states/CountdownState'
 require 'states/PlayState'
-require 'states/PauseState'
 require 'states/ScoreState'
 require 'states/TitleScreenState'
 
@@ -80,9 +79,6 @@ function love.load()
         end,
         ['countdown'] = function()
             return CountdownState()
-        end,
-        ['pause'] = function()
-            return PauseState()
         end,
         ['play'] = function()
             return PlayState()
