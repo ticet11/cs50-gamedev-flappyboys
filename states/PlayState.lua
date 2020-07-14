@@ -32,6 +32,7 @@ function PlayState:update(dt)
     end
     if self.paused then
         scrolling = false
+        sounds['music']:pause()
     else
         scrolling = true
         self.timer = self.timer + dt
