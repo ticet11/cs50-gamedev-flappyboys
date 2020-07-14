@@ -15,7 +15,7 @@ function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
     self.timer = 0
-    self.spawnTime = 1
+    self.spawnTime = math.random(1, 3)
     self.paused = false
 
     self.score = 0
